@@ -1,8 +1,8 @@
 FROM ubuntu:22.04
 
-# Install dependencies
+# Install Bun, Redis, Postgres
 RUN apt-get update && apt-get install -y \
-    curl redis-server postgresql-14 supervisor \
+    curl redis-server postgresql-14 \
     && curl -fsSL https://bun.sh/install | bash \
     && apt-get clean
 
@@ -22,8 +22,12 @@ RUN mkdir -p /var/lib/postgresql/data && \
     echo "host all all 0.0.0.0/0 md5" >> /var/lib/postgresql/data/pg_hba.conf && \
     echo "listen_addresses='*'" >> /var/lib/postgresql/data/postgresql.conf
 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN bun run build
 
 EXPOSE 3000
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+# Start Redis, Postgres, and app in one command
+CMD redis-server --requirepass "${REDIS_PASSWORD}" & \
+    su - postgres -c "/usr/lib/postgresql/14/bin/postgres -D /var/lib/postgresql/data" & \
+    bun start
+

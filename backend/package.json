@@ -3,10 +3,11 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf ./build && yarn build ./src/index.ts --outdir ./build --target bun",
-    "start": "yarn build/index.js",
+    "build": "rm -rf ./build && bun build ./src/index.ts --outdir ./build --target bun",
+    "start": "bun build/index.js",
     "dev": "bun run --watch src/index.ts",
     "d:dev": "docker-compose -f docker-compose.dev.yml up -d",
+    "d:redis": "docker-compose -f docker-compose.dev.yml -d redis",
     "d:db": "docker-compose -f docker-compose.dev.yml up -d redis postgres",
     "d:dev-dn": "docker-compose -f docker-compose.dev.yml down"
   },

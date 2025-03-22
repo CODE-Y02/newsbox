@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: newsapp_backend
+    command: ["bun", "--hot", "src/index.ts"]
+    env_file: .env
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - newsapp_network
+
+  redis:
+    image: redis:latest
+    container_name: newsapp_redis
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - newsapp_network
+
+  postgres:
+    image: postgres:latest
+    container_name: newsapp_postgres
+    env_file: .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - newsapp_network
+
+volumes:
+  redis_data:
+  postgres_data:
+
+networks:
+  newsapp_network:
+    driver: bridge

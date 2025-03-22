@@ -1,15 +1,16 @@
 FROM oven/bun:latest
 WORKDIR /app
 COPY package.json /app/
-RUN  bun install
+RUN  npm install
 COPY . .
 EXPOSE 3000
 
 # Build your app
-RUN bun run build
+RUN npm run build
+
 
 # Start your app
-CMD ["bun", "start"]
+CMD ["npm", "start"]
 
 # # Use an official Node.js runtime as a base image (since Bun is Node-compatible)
 # FROM oven/bun:latest

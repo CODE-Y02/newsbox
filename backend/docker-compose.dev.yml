@@ -8,6 +8,9 @@ services:
     container_name: newsapp_backend
     command: ["bun", "--hot", "src/index.ts"]
     env_file: .env
+    environment:
+      - REDIS_PORT=6379
+      - REDIS_HOST=redis
     volumes:
       - ./:/app
     ports:

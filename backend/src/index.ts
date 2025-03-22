@@ -4,6 +4,7 @@ import { routes } from "./routes";
 import config from "./config";
 import env from "./config/env";
 import cors from "@elysiajs/cors";
+import redis from "./redis";
 
 const app = new Elysia()
 
@@ -49,10 +50,24 @@ const app = new Elysia()
         };
     }
   })
-  .use(routes)
-  .listen(env.PORT);
+  .use(routes);
+// .listen(env.PORT);
 
-console.log(`Server running at ${app.server?.hostname}:${app.server?.port}`);
-console.log(
-  `Swagger docs available at http://${app.server?.hostname}:${app.server?.port}/docs`
-);
+const start = async () => {
+  try {
+    await redis.ping();
+
+    app.listen(env.PORT);
+
+    console.log(
+      `Server running at ${app.server?.hostname}:${app.server?.port}`
+    );
+    console.log(
+      `Swagger docs available at http://${app.server?.hostname}:${app.server?.port}/docs`
+    );
+  } catch (error) {
+    console.log("failed");
+  }
+};
+
+start();

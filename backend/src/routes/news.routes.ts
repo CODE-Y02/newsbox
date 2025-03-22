@@ -14,6 +14,9 @@ export const newsRoutes = new Elysia({ prefix: "/api/news" })
         country: t.Optional(
           t.String({ description: "Country code (e.g., us, uk)" })
         ),
+        language: t.Optional(
+          t.String({ description: "Country code (e.g., en)" })
+        ),
         category: t.Optional(
           t.String({ description: "News category (e.g., technology, sports)" })
         ),

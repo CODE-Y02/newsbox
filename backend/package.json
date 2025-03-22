@@ -11,6 +11,7 @@
     "d:dev-dn": "docker-compose -f docker-compose.dev.yml down"
   },
   "dependencies": {
+    "@elysiajs/cors": "^1.2.0",
     "@elysiajs/swagger": "^1.2.2",
     "axios": "^1.8.4",
     "dotenv": "^16.4.7",

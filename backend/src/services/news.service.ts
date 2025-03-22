@@ -27,8 +27,15 @@ export const NewsService = {
     category?: string;
     page?: number;
     pageSize?: number;
+    language?: string;
   }) {
-    const { country, category, page = 1, pageSize = 20 } = query;
+    const {
+      country,
+      category,
+      page = 1,
+      pageSize = 20,
+      language = "en",
+    } = query;
 
     const cacheKey = JSON.stringify({ route: "/top-headlines", query });
     const cached = await getFromCache(cacheKey);
@@ -45,7 +52,7 @@ export const NewsService = {
         category,
         page,
         pageSize,
-        language: "en",
+        language,
       },
     });
 

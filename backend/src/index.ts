@@ -3,6 +3,7 @@ import { swagger } from "@elysiajs/swagger";
 import { routes } from "./routes";
 import config from "./config";
 import env from "./config/env";
+import cors from "@elysiajs/cors";
 
 const app = new Elysia()
 
@@ -12,6 +13,7 @@ const app = new Elysia()
       path: "/docs",
     })
   )
+  .use(cors())
   .onError(({ code, error, set, path, request }) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error({

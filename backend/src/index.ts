@@ -1,28 +1,21 @@
-// src/index.ts
 import { Elysia } from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import { routes } from "./routes";
+import config from "./config";
 
 const app = new Elysia()
-  // Swagger Documentation
+
   .use(
     swagger({
-      documentation: {
-        info: {
-          title: "News App API",
-          version: "1.0.0",
-          description: "API for fetching news data from NewsAPI",
-        },
-        tags: [{ name: "News", description: "News-related endpoints" }],
-      },
+      ...config.swaggerConf,
       path: "/docs",
     })
   )
-  // Global Error Handling
   .onError(({ code, error, set }) => {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     console.error({
       code,
-      error: (error as Error).message!,
+      error: errorMessage,
       timestamp: new Date().toISOString(),
     });
 
@@ -31,7 +24,7 @@ const app = new Elysia()
         set.status = 400;
         return {
           status: "error",
-          message: `Validation error: ${error.message}`,
+          message: `Validation error: ${errorMessage}`,
           data: null,
         };
       case "NOT_FOUND":
@@ -45,12 +38,11 @@ const app = new Elysia()
         set.status = 500;
         return {
           status: "error",
-          message: error || "Internal server error",
+          message: errorMessage || "Internal server error",
           data: null,
         };
     }
   })
-  // Mount all routes
   .use(routes)
   .listen(3000);
 

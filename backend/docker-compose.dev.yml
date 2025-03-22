@@ -21,6 +21,7 @@ services:
   redis:
     image: redis:latest
     container_name: newsapp_redis
+    env_file: .env
     volumes:
       - redis_data:/data
     ports:

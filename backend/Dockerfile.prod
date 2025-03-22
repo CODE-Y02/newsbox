@@ -1,0 +1,29 @@
+FROM ubuntu:22.04
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    curl redis-server postgresql-14 supervisor \
+    && curl -fsSL https://bun.sh/install | bash \
+    && apt-get clean
+
+ENV PATH="/root/.bun/bin:${PATH}"
+
+WORKDIR /app
+
+COPY package.json ./
+RUN bun install
+
+COPY . .
+
+# Initialize Postgres
+RUN mkdir -p /var/lib/postgresql/data && \
+    chown postgres:postgres /var/lib/postgresql/data && \
+    su - postgres -c "/usr/lib/postgresql/14/bin/initdb -D /var/lib/postgresql/data" && \
+    echo "host all all 0.0.0.0/0 md5" >> /var/lib/postgresql/data/pg_hba.conf && \
+    echo "listen_addresses='*'" >> /var/lib/postgresql/data/postgresql.conf
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+EXPOSE 3000
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

@@ -1,10 +1,9 @@
 import Redis from "ioredis";
 import env from "./config/env";
 
-const redis = new Redis({
-  host: env.REDIS_HOST!,
-  port: env.REDIS_PORT!,
-});
+const redis = new Redis(
+  `rediss://:${env.REDIS_PASSWORD}@${env.REDIS_HOST}:${env.REDIS_PORT}`
+);
 
 const CACHE_TTL = 60; // 60 seconds
 

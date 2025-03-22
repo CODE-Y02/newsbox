@@ -16,7 +16,9 @@ const envSchema = z.object({
     .string()
     .transform((val) => Number(val))
     .pipe(z.number()),
+  REDIS_USER: z.string(),
   REDIS_HOST: z.string(),
+  REDIS_PASSWORD: z.string(),
 
   // DB
   POSTGRES_USER: z.string(),

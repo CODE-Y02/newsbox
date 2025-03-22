@@ -2,6 +2,7 @@ import { Elysia } from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import { routes } from "./routes";
 import config from "./config";
+import env from "./config/env";
 
 const app = new Elysia()
 
@@ -11,11 +12,14 @@ const app = new Elysia()
       path: "/docs",
     })
   )
-  .onError(({ code, error, set }) => {
+  .onError(({ code, error, set, path, request }) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error({
       code,
       error: errorMessage,
+      path,
+      requestUrl: request.url,
+      method: request.method,
       timestamp: new Date().toISOString(),
     });
 
@@ -44,7 +48,7 @@ const app = new Elysia()
     }
   })
   .use(routes)
-  .listen(3000);
+  .listen(env.PORT);
 
 console.log(`Server running at ${app.server?.hostname}:${app.server?.port}`);
 console.log(

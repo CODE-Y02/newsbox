@@ -1,6 +1,12 @@
 import { z } from "zod";
 
 const envSchema = z.object({
+  // SERVER ENV
+  PORT: z
+    .string()
+    .transform((val) => Number(val))
+    .pipe(z.number()),
+
   // NEWS API
   NEWS_API_KEY: z.string(),
   NEWS_API_BASE: z.string(),

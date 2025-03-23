@@ -1,6 +1,9 @@
 import { z } from "zod";
 
 const envSchema = z.object({
+  // NODE
+  NODE_ENV: z.enum(["development", "production", "local"]),
+
   // SERVER ENV
   PORT: z
     .string()
@@ -19,6 +22,7 @@ const envSchema = z.object({
   REDIS_USER: z.string(),
   REDIS_HOST: z.string(),
   REDIS_PASSWORD: z.string(),
+  REDIS_CONNECTION_STRING: z.string(),
 
   // DB
   POSTGRES_USER: z.string(),
@@ -31,7 +35,8 @@ const env = envSchema.parse(
   Object.keys(envSchema.shape).reduce((acc, key) => {
     const value = process.env[key];
     if (value === undefined) {
-      throw new Error(`Missing environment variable: ${key}`);
+      const msg = `Missing environment variable: ${key}`;
+      throw (new Error().message = msg);
     }
     return { ...acc, [key]: value };
   }, {})

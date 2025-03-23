@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import config from "../config";
-import { getFromCache, saveInCache } from "../redis";
+// import { getFromCache, saveInCache } from "../redis";
 
 const newsApi = axios.create({
   baseURL: config.env.default.NEWS_API_BASE,
@@ -37,12 +37,12 @@ export const NewsService = {
       language = "en",
     } = query;
 
-    const cacheKey = JSON.stringify({ route: "/top-headlines", query });
-    const cached = await getFromCache(cacheKey);
+    // const cacheKey = JSON.stringify({ route: "/top-headlines", query });
+    // const cached = await getFromCache(cacheKey);
 
-    if (cached) {
-      return cached;
-    }
+    // if (cached) {
+    //   return cached;
+    // }
 
     // cache it for 1 hour
 
@@ -56,9 +56,9 @@ export const NewsService = {
       },
     });
 
-    if (response.data) {
-      await saveInCache(cacheKey, response.data, 60 * 60 * 10);
-    }
+    // if (response.data) {
+    //   await saveInCache(cacheKey, response.data, 60 * 60 * 10);
+    // }
 
     return response.data;
   },

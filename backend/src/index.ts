@@ -4,7 +4,6 @@ import { routes } from "./routes";
 import config from "./config";
 import env from "./config/env";
 import cors from "@elysiajs/cors";
-import redis from "./redis";
 
 const app = new Elysia()
 

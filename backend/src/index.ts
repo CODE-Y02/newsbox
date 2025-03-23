@@ -55,8 +55,6 @@ const app = new Elysia()
 
 const start = async () => {
   try {
-    await redis.ping();
-
     app.listen(env.PORT);
 
     console.log(

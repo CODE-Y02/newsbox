@@ -10,7 +10,6 @@ const CACHE_TTL = 60; // 60 seconds
 redis.on("connect", () => {
   console.log("Connected to Redis");
 });
-// Handle Redis errors
 redis.on("error", (err) => {
   console.error("Redis connection error:", err);
 });

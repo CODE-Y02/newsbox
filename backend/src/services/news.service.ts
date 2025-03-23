@@ -39,8 +39,6 @@ export const getTopHeadlines = async (query: {
     return cached;
   }
 
-  // cache it for 1 hour
-
   const response = await newsApi.get("/top-headlines", {
     params: {
       country,
@@ -52,7 +50,7 @@ export const getTopHeadlines = async (query: {
   });
 
   if (response.data) {
-    await saveInCache(cacheKey, response.data, 60 * 60 * 10);
+    await saveInCache(cacheKey, response.data, 60 * 60); //  1 hr
   }
 
   return response.data;
@@ -66,7 +64,12 @@ export const searchNews = async (query: {
   page?: number;
   pageSize?: number;
 }) => {
-  const { q, from, to, language, page = 1, pageSize = 20 } = query;
+  const { q, from, to, language, page = 1, pageSize = 10 } = query;
+  const cacheKey = JSON.stringify({ route: "/search", query });
+  const cached = await getFromCache(cacheKey);
+  if (cached) {
+    return cached;
+  }
 
   const response = await newsApi.get("/everything", {
     params: {
@@ -79,6 +82,10 @@ export const searchNews = async (query: {
     },
   });
 
+  if (response.data) {
+    await saveInCache(cacheKey, response.data, 60 * 10); // 10 min
+  }
+
   return response.data;
 };
 
@@ -88,6 +95,8 @@ export const getSources = async (query: {
   language?: string;
 }) => {
   const { country, category, language } = query;
+  const cacheKey = JSON.stringify({ route: "/sources", query });
+  const cached = await getFromCache(cacheKey);
 
   const response = await newsApi.get("/top-headlines/sources", {
     params: {
@@ -96,6 +105,14 @@ export const getSources = async (query: {
       language: "en",
     },
   });
+
+  if (cached) {
+    return cached;
+  }
+
+  if (response.data) {
+    await saveInCache(cacheKey, response.data, 60 * 60 * 6); // 6 hr
+  }
 
   return response.data;
 };

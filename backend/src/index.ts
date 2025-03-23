@@ -15,10 +15,6 @@ const app = new Elysia()
   )
   .use(cors({ origin: "*" }))
   .onBeforeHandle(({ request, body, error, params, path }) => {
-    console.log("\n");
-
-    console.log(path);
-
     console.log({
       url: request.url,
       method: request.method,

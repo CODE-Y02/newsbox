@@ -14,6 +14,19 @@ const app = new Elysia()
     })
   )
   .use(cors({ origin: "*" }))
+  .onBeforeHandle(({ request, body, error, params, path }) => {
+    console.log("\n");
+
+    console.log(path);
+
+    console.log({
+      url: request.url,
+      method: request.method,
+      body,
+      params,
+      timestamp: new Date().toISOString(),
+    });
+  })
   .onError(({ code, error, set, path, request }) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error({
@@ -49,7 +62,17 @@ const app = new Elysia()
         };
     }
   })
-  .use(routes);
+  .use(routes)
+  .get("/ping", () => "ping", {
+    detail: {
+      tags: ["Ping"],
+      responses: {
+        200: { description: "Successful response with search results" },
+        400: { description: "Invalid query parameters" },
+        500: { description: "Server error" },
+      },
+    },
+  });
 // .listen(env.PORT);
 
 const start = async () => {

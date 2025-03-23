@@ -6,6 +6,8 @@ export const newsRoutes = new Elysia({ prefix: "/api/news" })
   .get(
     "/top-headlines",
     async ({ query, set }) => {
+      console.log("api called /top-headlines  ", query);
+
       const data = await NewsService.getTopHeadlines(query);
       return successResponse(data, "Top headlines fetched successfully");
     },

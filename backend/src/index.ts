@@ -13,7 +13,7 @@ const app = new Elysia()
       path: "/docs",
     })
   )
-  .use(cors())
+  .use(cors({ origin: "*" }))
   .onError(({ code, error, set, path, request }) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error({

@@ -1,15 +1,20 @@
 import { Elysia, t } from "elysia";
-import { NewsService } from "../services/news.service";
 import { successResponse } from "../types";
+import {
+  getSources,
+  getTopHeadlines,
+  searchNews,
+} from "../services/news.service";
 
 export const newsRoutes = new Elysia({ prefix: "/api/news" })
   .get(
     "/top-headlines",
     async ({ query, set }) => {
       console.log("api called /top-headlines  ", query);
+      return "headlines called";
 
-      const data = await NewsService.getTopHeadlines(query);
-      return successResponse(data, "Top headlines fetched successfully");
+      const data = await getTopHeadlines(query);
+      // return successResponse(data, "Top headlines fetched successfully");
     },
     {
       query: t.Object({
@@ -48,7 +53,7 @@ export const newsRoutes = new Elysia({ prefix: "/api/news" })
   .get(
     "/search",
     async ({ query, set }) => {
-      const data = await NewsService.searchNews(query);
+      const data = await searchNews(query);
       return successResponse(data, "Search results fetched successfully");
     },
     {
@@ -84,7 +89,7 @@ export const newsRoutes = new Elysia({ prefix: "/api/news" })
   .get(
     "/sources",
     async ({ query, set }) => {
-      const data = await NewsService.getSources(query);
+      const data = await getSources(query);
       return successResponse(data, "Sources fetched successfully");
     },
     {

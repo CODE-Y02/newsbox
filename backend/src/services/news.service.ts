@@ -1,6 +1,5 @@
 import axios, { AxiosError } from "axios";
 import config from "../config";
-// import { getFromCache, saveInCache } from "../redis";
 
 const newsApi = axios.create({
   baseURL: config.env.default.NEWS_API_BASE,
@@ -21,87 +20,81 @@ newsApi.interceptors.response.use(
   }
 );
 
-export const NewsService = {
-  async getTopHeadlines(query: {
-    country?: string;
-    category?: string;
-    page?: number;
-    pageSize?: number;
-    language?: string;
-  }) {
-    const {
+export const NewsService = {};
+
+export const getTopHeadlines = async (query: {
+  country?: string;
+  category?: string;
+  page?: number;
+  pageSize?: number;
+  language?: string;
+}) => {
+  const { country, category, page = 1, pageSize = 20, language = "en" } = query;
+
+  // const cacheKey = JSON.stringify({ route: "/top-headlines", query });
+  // const cached = await getFromCache(cacheKey);
+
+  // if (cached) {
+  //   return cached;
+  // }
+
+  // cache it for 1 hour
+
+  const response = await newsApi.get("/top-headlines", {
+    params: {
       country,
       category,
-      page = 1,
-      pageSize = 20,
-      language = "en",
-    } = query;
+      page,
+      pageSize,
+      language,
+    },
+  });
 
-    // const cacheKey = JSON.stringify({ route: "/top-headlines", query });
-    // const cached = await getFromCache(cacheKey);
+  // if (response.data) {
+  //   await saveInCache(cacheKey, response.data, 60 * 60 * 10);
+  // }
 
-    // if (cached) {
-    //   return cached;
-    // }
+  return response.data;
+};
 
-    // cache it for 1 hour
+export const searchNews = async (query: {
+  q: string;
+  from?: string;
+  to?: string;
+  language?: string;
+  page?: number;
+  pageSize?: number;
+}) => {
+  const { q, from, to, language, page = 1, pageSize = 20 } = query;
 
-    const response = await newsApi.get("/top-headlines", {
-      params: {
-        country,
-        category,
-        page,
-        pageSize,
-        language,
-      },
-    });
+  const response = await newsApi.get("/everything", {
+    params: {
+      q,
+      from,
+      to,
+      language: "en",
+      page,
+      pageSize,
+    },
+  });
 
-    // if (response.data) {
-    //   await saveInCache(cacheKey, response.data, 60 * 60 * 10);
-    // }
+  return response.data;
+};
 
-    return response.data;
-  },
+export const getSources = async (query: {
+  country?: string;
+  category?: string;
+  language?: string;
+}) => {
+  const { country, category, language } = query;
 
-  async searchNews(query: {
-    q: string;
-    from?: string;
-    to?: string;
-    language?: string;
-    page?: number;
-    pageSize?: number;
-  }) {
-    const { q, from, to, language, page = 1, pageSize = 20 } = query;
+  const response = await newsApi.get("/top-headlines/sources", {
+    params: {
+      country,
+      category,
+      language: "en",
+    },
+  });
 
-    const response = await newsApi.get("/everything", {
-      params: {
-        q,
-        from,
-        to,
-        language: "en",
-        page,
-        pageSize,
-      },
-    });
-
-    return response.data;
-  },
-
-  async getSources(query: {
-    country?: string;
-    category?: string;
-    language?: string;
-  }) {
-    const { country, category, language } = query;
-
-    const response = await newsApi.get("/top-headlines/sources", {
-      params: {
-        country,
-        category,
-        language: "en",
-      },
-    });
-
-    return response.data;
-  },
+  return response.data;
 };

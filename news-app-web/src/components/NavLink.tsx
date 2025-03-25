@@ -24,7 +24,7 @@ const NavLink = ({
     <Link
       href={{ pathname: href }}
       className={cn(
-        "px-2 py-0.5 rounded ring-2 ring-purple-500 bg-white font-semibold",
+        "px-2 py-0.5 rounded-xl ring-2 ring-purple-500 bg-white font-semibold",
         isActive && "bg-black text-white"
       )}
     >

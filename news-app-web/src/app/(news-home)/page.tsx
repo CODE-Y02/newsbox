@@ -5,8 +5,6 @@ import { Categories } from "@/types/categories";
 import React from "react";
 
 const Home = async () => {
-  // Fetch data for each category
-
   const promiseArr = Object.values(Categories).map(async (category) => ({
     category,
     data: await getTopArticles({
@@ -18,7 +16,7 @@ const Home = async () => {
   const data = await Promise.all(promiseArr);
 
   return (
-    <div className="w-full min-h-screen bg-gray-100 py-10">
+    <div className="w-full min-h-screen">
       <div className="container mx-auto px-4">
         {data.map((d) => (
           <div className="mb-12" key={d.category}>

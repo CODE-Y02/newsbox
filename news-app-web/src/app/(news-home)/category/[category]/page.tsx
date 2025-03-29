@@ -11,7 +11,7 @@ type Props = {
 
 const NewsByCategoryPage = async (props: Props) => {
   const { category } = await props.params;
-  const { page, size } = await props.searchParams;
+  const { page } = await props.searchParams;
 
   const currentPage = Number(page) || 1;
 

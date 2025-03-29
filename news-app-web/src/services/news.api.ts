@@ -36,6 +36,7 @@ export const getTopArticles = async (
 
     return response.data?.data;
   } catch (error) {
+    console.log(error);
     return;
   }
 };

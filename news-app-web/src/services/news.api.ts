@@ -1,6 +1,6 @@
 "use server";
 
-import { IArticle } from "@/types/News";
+import { TGetArticlesResponse } from "@/types/News";
 import axios, { AxiosError } from "axios";
 
 const newsApi = axios.create({
@@ -19,7 +19,7 @@ newsApi.interceptors.response.use(
   }
 );
 
-type input = {
+export type TGetTopArticlesInput = {
   country?: string;
   category?: string;
   page?: number;
@@ -27,11 +27,16 @@ type input = {
 };
 
 export const getTopArticles = async (
-  input: input
-): Promise<IArticle[] | undefined> => {
-  const response = await newsApi.get("/top-headlines", {
-    params: { ...input },
-  });
+  input: TGetTopArticlesInput
+): Promise<TGetArticlesResponse | undefined> => {
+  try {
+    const response = await newsApi.get("/top-headlines", {
+      params: { ...input },
+    });
 
-  return response.data?.data?.articles;
+    return response.data?.data;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
 };

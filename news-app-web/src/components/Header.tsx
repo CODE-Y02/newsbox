@@ -1,4 +1,3 @@
-// Header.jsx
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
@@ -40,7 +39,7 @@ function Header() {
     <nav
       className={`bg-gray-100 flex md:justify-center overflow-x-scroll items-center gap-6 p-3 sticky top-0 w-full transition-all duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
-      } z-50`}
+      } z-50 border-b-gray-500/50 border-2`}
     >
       <NavLink href={"/"} name={"home"} pathname={pathname} />
       {categories.map((c) => {

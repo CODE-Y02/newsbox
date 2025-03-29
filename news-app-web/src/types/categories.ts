@@ -1,9 +1,9 @@
 export enum Categories {
-  Business = "business",
-  Entertainment = "entertainment",
-  General = "general",
-  Health = "health",
-  Science = "science",
-  Sports = "sports",
-  Technology = "technology",
+  business = "business",
+  entertainment = "entertainment",
+  general = "general",
+  health = "health",
+  science = "science",
+  sports = "sports",
+  technology = "technology",
 }

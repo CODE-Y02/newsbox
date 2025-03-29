@@ -1,3 +1,4 @@
+"use server";
 import { IArticle } from "@/types/News";
 import {
   Card,
@@ -8,11 +9,12 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 
-type Props = {
-  data: IArticle;
+export type NewsCardProps = {
+  data?: IArticle;
 };
 
-const NewsCard = ({ data }: Props) => {
+const NewsCard = ({ data }: NewsCardProps) => {
+  if (!data) return;
   return (
     <Card className="w-full max-w-lg mx-auto bg-white shadow-xl rounded-lg overflow-hidden flex flex-col min-h-[350px] p-0">
       {/* Image Section */}

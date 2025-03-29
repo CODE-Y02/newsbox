@@ -19,3 +19,8 @@ export type TGetTopNewsInput = {
   pageSize?: number;
 };
 
+export type TGetArticlesResponse = {
+  articles: IArticle[];
+  totalResults: number;
+  status: string;
+};

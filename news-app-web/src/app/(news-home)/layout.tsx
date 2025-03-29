@@ -1,3 +1,4 @@
+import GoToTopButton from "@/components/GotoTop";
 import Header from "@/components/Header";
 
 function Layout({
@@ -15,6 +16,7 @@ function Layout({
       <footer className="bg-slate-500/20 p-3 text-center">
         <p>© {currentYear} Bantai Company. All rights reserved.</p>
       </footer>
+      <GoToTopButton />
     </div>
   );
 }

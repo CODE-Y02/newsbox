@@ -1,4 +1,3 @@
-import GoToTopButton from "@/components/GotoTop";
 import NewsCard from "@/components/NewsCard";
 import { getTopArticles } from "@/services/news.api";
 import { Categories } from "@/types/categories";
@@ -7,10 +6,7 @@ import React from "react";
 const Home = async () => {
   const promiseArr = Object.values(Categories).map(async (category) => ({
     category,
-    data: await getTopArticles({
-      category: category,
-      pageSize: 8,
-    }),
+    data: await fetchArticles(category),
   }));
 
   const data = await Promise.all(promiseArr);
@@ -31,9 +27,17 @@ const Home = async () => {
           </div>
         ))}
       </div>
-      <GoToTopButton />
     </div>
   );
 };
 
 export default Home;
+
+const fetchArticles = async (category: string) => {
+  const response = await getTopArticles({
+    category: category,
+    pageSize: 8,
+  });
+
+  return response?.articles;
+};

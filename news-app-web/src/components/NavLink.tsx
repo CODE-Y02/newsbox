@@ -18,8 +18,6 @@ const NavLink = ({
     [pathname, href]
   );
 
-  console.log({ pathname, href });
-
   return (
     <Link
       href={{ pathname: href }}
